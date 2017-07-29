@@ -3,20 +3,26 @@
 
         <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         	<encoder>
-                 <pattern>%date{ISO8601} %level %method l:%line - %message%n</pattern>
+                 <pattern>%date{ISO8601} %level %class %method l:%line - %message%n</pattern>
             </encoder>
         </appender>
 
         <logger name="org.eclipse.jetty" level="INFO" />
- 		<!-- <logger name="org.eclipse.jetty.security" level="DEBUG" /> -->
+
+ 			<logger name="org.eclipse.jetty.security" level="DEBUG" />
+
         <logger name="org.apache.tomcat" level="INFO" />
         <logger name="org.apache.jasper" level="INFO" />
         <logger name="net.bull.javamelody" level="INFO" />
         <logger name="org.hibernate" level="INFO" />
-        <logger name="org.springframework" level="INFO" />
+
+
+    <logger name="org.springframework.security" level="DEBUG" />
+    <logger name="org.springframework" level="INFO" />
+
         <logger name="org.apache.cxf" level="WARN" />
         <logger name="jndi" level="WARN" />
-        <logger name="no.politiet.fellestjenester.fotoregister" level="DEBUG" />
+        <logger name="no.politiet" level="DEBUG" />
 
         <root level="DEBUG">
                 <appender-ref ref="CONSOLE" />

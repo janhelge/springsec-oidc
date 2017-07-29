@@ -10,7 +10,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
 
 @Configuration
 @Import(CsrfFormBasedMvcController.class)
@@ -21,7 +20,7 @@ public class FormbasedSpringSecConf extends WebSecurityConfigurerAdapter{
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        log.debug("Method onfigureGlobal() was called");
+        log.debug("configureGlobal() was called");
         auth
                 .inMemoryAuthentication()
                 .withUser("user").password("password").roles("USER")
@@ -41,41 +40,19 @@ public class FormbasedSpringSecConf extends WebSecurityConfigurerAdapter{
     protected void configure(HttpSecurity http) throws Exception {
 
         http
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
-
-        http
-                .csrf()
-                //.disable() // <== Trenger ikke lenger csrf().disable() for at "/logout" skal fungere
-        ;
-
-        http
-            .jee()
-            //.mappableRoles("LAND", "DISTRIKT_LISTE", "DISTRIKT")
-            .mappableRoles("USER")
-            //.authenticatedUserDetailsService(authenticationUserDetailsService())
-        ;
-
-
-        http
             .authorizeRequests()
                 .antMatchers("/secured/**")
                 .hasAnyRole("USER") // <== "USER" funker men "ROLE_USER" fungerer ikke
-                .anyRequest().authenticated()
+                .anyRequest()
+                .authenticated()
 
             .and()
                 .formLogin()
                 .permitAll()
+
             .and()
                 .logout()
                 .permitAll()
-//                .invalidateHttpSession(true)
-//                .clearAuthentication(true)
-//                .deleteCookies("JSESSIONID")
-//                .logoutSuccessUrl("/bye")
-//            .and()
-//                .exceptionHandling()
-//                .accessDeniedPage("/login?reason=failure")
         ;
     }
 }

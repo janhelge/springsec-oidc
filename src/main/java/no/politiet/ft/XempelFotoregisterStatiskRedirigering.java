@@ -15,9 +15,9 @@ import java.io.IOException;
  */
 
 @RequestMapping
-public class FotoregisterStatiskRedirigering {
+public class XempelFotoregisterStatiskRedirigering {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(FotoregisterStatiskRedirigering.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(XempelFotoregisterStatiskRedirigering.class);
 
 	@Autowired
 	private Environment env;

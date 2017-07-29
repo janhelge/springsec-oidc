@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -12,10 +13,11 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 
 @Configuration
+@Import(CsrfFormBasedMvcController.class)
 @EnableWebSecurity
-public class ASpringSecConf extends WebSecurityConfigurerAdapter{
+public class FormbasedSpringSecConf extends WebSecurityConfigurerAdapter{
 
-    private static final Logger log = LoggerFactory.getLogger(ASpringSecConf.class);
+    private static final Logger log = LoggerFactory.getLogger(FormbasedSpringSecConf.class);
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -70,10 +72,10 @@ public class ASpringSecConf extends WebSecurityConfigurerAdapter{
 //                .invalidateHttpSession(true)
 //                .clearAuthentication(true)
 //                .deleteCookies("JSESSIONID")
-                .logoutSuccessUrl("/login?reason=logout")
-            .and()
-                .exceptionHandling()
-                .accessDeniedPage("/login?reason=failure")
+//                .logoutSuccessUrl("/bye")
+//            .and()
+//                .exceptionHandling()
+//                .accessDeniedPage("/login?reason=failure")
         ;
     }
 }

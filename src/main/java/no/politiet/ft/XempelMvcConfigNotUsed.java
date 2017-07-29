@@ -21,10 +21,10 @@ import java.util.Date;
 		"classpath:application-env.properties"})
 //@Import({SpringSecurityConfig.class, JndiDaoConfig.class, LdapConfig.class})
 @EnableWebMvc
-@Import({DummyMvcController.class, ASpringSecConf.class})
-public class MvcConfig extends WebMvcConfigurerAdapter {
+@Import({CsrfFormBasedMvcController.class, FormbasedSpringSecConf.class})
+public class XempelMvcConfigNotUsed extends WebMvcConfigurerAdapter {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(MvcConfig.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(XempelMvcConfigNotUsed.class);
   
 //     @Bean
 //     public FotoregisterRapportServiceController pofServiceController(FotoregisterRapportDao pofReportDao, Environment env){
@@ -35,8 +35,8 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
 //    public HelloWorldController helloWorldController(){ return new HelloWorldController();}
 //
      @Bean
-     public FotoregisterStatiskRedirigering statiskRedirigering()  {
-    	 return new FotoregisterStatiskRedirigering();
+     public XempelFotoregisterStatiskRedirigering statiskRedirigering()  {
+    	 return new XempelFotoregisterStatiskRedirigering();
      }
 
 

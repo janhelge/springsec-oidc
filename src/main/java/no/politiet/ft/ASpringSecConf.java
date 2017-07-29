@@ -28,6 +28,9 @@ public class ASpringSecConf extends WebSecurityConfigurerAdapter{
                 .and()
                 .withUser("12127219735").password("password").roles("USER")
         ;
+        //AuthenticationManager orBuild = auth.getOrBuild();
+
+
     }
 
 //    @Override
@@ -72,16 +75,17 @@ public class ASpringSecConf extends WebSecurityConfigurerAdapter{
 
         http
                 .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
-
-// 		Vurdere om dette trengs etterhvert ...
-//		http
-//		.exceptionHandling()
-//		.accessDeniedPage("/access-denied.html");
+                .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+                ;//.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
+//
+//// 		Vurdere om dette trengs etterhvert ...
+////		http
+////		.exceptionHandling()
+////		.accessDeniedPage("/access-denied.html");
 
         http
                 .csrf()
-                .disable() // <== Trenger csrf().disable() for at "/log" (dvs logout) skal fungere
+                .disable() // <== Trenger csrf().disable() for at "/logout" (dvs logout) skal fungere
         ;
 
         http
@@ -98,27 +102,49 @@ public class ASpringSecConf extends WebSecurityConfigurerAdapter{
 //                .usernameParameter("username")
 //                .passwordParameter("password")
 //                .loginProcessingUrl("/login")
-//                .successForwardUrl("/secured/hei")
+//                //.successForwardUrl("/secured/hei")
 //                .permitAll()
 //        ;
 //
+//        http
+//                .logout()
+//                .logoutUrl("/log") // <== NOTE: Forutsetter http.csrf().disable() siden dette blir aktivert med GET!
+//                .permitAll()
+//                .invalidateHttpSession(true)
+//                .logoutSuccessUrl("/login?reason=logout")
+//        ;
+//
+//        // Granted Authorities: ROLE_USER' stored to HttpSession:
+//        //http.httpBasic().realmName("MyRealmName");
+//
+//        http
+//                .authorizeRequests()
+//                .antMatchers("/secured/**")
+//                .hasAnyRole("USER") // <== "USER" funker men "ROLE_USER" fungerer ikke
+//                .anyRequest()
+//                .authenticated()
+//        ;
+//
+//
+
         http
+            .authorizeRequests()
+                .antMatchers("/secured/**").hasAnyRole("USER")              //.access("hasRole('ROLE_ADMIN')")
+                .anyRequest().authenticated()
+
+            .and()
+                .formLogin() //.loginProcessingUrl("/login").permitAll()
+                //.loginPage("/login")
+                //.failureUrl("/login?error")//.permitAll()
+                //.usernameParameter("username").passwordParameter("password")
+                //.loginProcessingUrl("j_security_check")
+            .and()
                 .logout()
-                .logoutUrl("/log") // <== NOTE: Forutsetter http.csrf().disable() siden dette blir aktivert med GET!
-                .permitAll()
-                .invalidateHttpSession(true)
-                .logoutSuccessUrl("/login?reason=logout")
-        ;
+                .logoutUrl("/logout")
+                .permitAll().invalidateHttpSession(true).logoutSuccessUrl("/login?reason=logout")
+            .and()
+                .exceptionHandling().accessDeniedPage("/login?failure")
 
-        // Granted Authorities: ROLE_USER' stored to HttpSession:
-        http.httpBasic().realmName("MyRealmName");
-
-        http
-                .authorizeRequests()
-                .antMatchers("/secured/**")
-                .hasAnyRole("USER") // <== "USER" funker men "ROLE_USER" fungerer ikke
-                .anyRequest()
-                .authenticated()
         ;
 
     }

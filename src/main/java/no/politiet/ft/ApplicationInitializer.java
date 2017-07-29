@@ -23,7 +23,8 @@ public class ApplicationInitializer extends AbstractAnnotationConfigDispatcherSe
     private void registerSpringSecFilter(ServletContext sc) {
 		sc
 		.addFilter("springSecurityFilterChain", DelegatingFilterProxy.class.getName())
-		.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/secured/*","/log")
+		.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class),
+                true, "/secured/*","/logout","/login")
 		;
 	}
 

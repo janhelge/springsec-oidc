@@ -21,7 +21,7 @@ public class HttpJettyRunner {
 		int port=8080;
 		String contextPath="/";
 	    new HttpJettyRunner().startWebApp(port, contextPath , ApplicationInitializer.class, "fotoreg-rapport-angular-webjar" );
-		System.out.println("Jetty is airborne :-), du kan verifisere paa\nhttp://localhost:" + port + contextPath+"/");
+		System.out.println("Jetty is airborne :-), du kan verifisere paa\nhttp://localhost:" + port + contextPath);
 	}
 
 	private void startWebApp(int port, String contextPath,

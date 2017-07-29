@@ -4,12 +4,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 
 @Configuration
@@ -58,11 +64,18 @@ public class DummyMvcController {
         return login("failure");
     }
 
-    @ResponseBody
-    @RequestMapping(value="/logout", method = RequestMethod.GET, produces = "text/plain")
-    public String logout() {
-        return "OK - du logges ut";
+
+    @RequestMapping(value="/logout", method = RequestMethod.GET)
+    public String logout(HttpServletRequest request, HttpServletResponse response) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null){
+            new SecurityContextLogoutHandler().logout(request, response, auth);
+        }
+        return "redirect:/login?reason=logout"; //You can redirect wherever you want, but generally it's a good practice to show login screen again.
     }
+
+
+
 
     @RequestMapping(value = "/login", produces = "text/html") // , method = RequestMethod.GET
     @ResponseBody
@@ -70,19 +83,7 @@ public class DummyMvcController {
         return generateUserFriendlyMessageFromReason(reason).toString();
     }
 
-    private StringBuilder nappendStandardLoginForm(StringBuilder sb){
-        return sb
 
-                .append("<form action='/j_spring_security_check' method='post' >")
-                .append("<table><tr><td><label for='username'>Brukernavn</label></td>")
-                .append("<td><input type='text' id='username' name='username'/></td></tr>")
-                .append("<tr><td><label for='password'>Passord</label></td>")
-                .append("<td><input type='password' id='password' name='password'/></td></tr>")
-                .append("<tr><td colspan='2'>")
-                .append("<input type='submit' name='action' value='Logg inn'/>")
-                .append("</td></tr></table></form>")
-                ;
-    }
     private StringBuilder appendStandardLoginForm(StringBuilder sb){
         return sb
                 .append("<form action='/login' method='post' >")

@@ -19,50 +19,16 @@ public class ASpringSecConf extends WebSecurityConfigurerAdapter{
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-
-
-        log.debug("ConfigureGlobal was actially called");
+        log.debug("Method onfigureGlobal() was called");
         auth
                 .inMemoryAuthentication()
                 .withUser("user").password("password").roles("USER")
                 .and()
                 .withUser("12127219735").password("password").roles("USER")
         ;
-        //AuthenticationManager orBuild = auth.getOrBuild();
-
-
     }
 
-//    @Override
-//    protected void configure(HttpSecurity http) throws Exception {
-////        http
-////                .authorizeRequests()
-////                .anyRequest().authenticated()
-////                .and()
-////                .formLogin()
-////                .loginPage("/login")
-////                .permitAll();
-//
-//
-//        http
-//                .authorizeRequests()
-//                .antMatchers("/secured/**").access("hasRole('USER')")
-//                //.antMatchers("/dba/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_DBA')")
-//                .and().formLogin()
-//                .loginPage("/login?reason=login")
-//                //.loginProcessingUrl("/perform_login")
-//                .failureUrl("/login?reason=failure")
-//                .defaultSuccessUrl("/secured/hei")
-//                .permitAll();
-//
-////        http
-////                .authorizeRequests()
-////                .antMatchers("/secured/**")
-////                .hasAnyRole("USER", "DISTRIKT_LISTE", "DISTRIKT")
-////                .anyRequest()
-////                .authenticated()
-////        ;
-//    }
+
     @Override
     public void configure(WebSecurity web) throws Exception {
         //Boolean isDebug = environment.getProperty("spring.security.debug", Boolean.class, Boolean.FALSE);
@@ -72,82 +38,42 @@ public class ASpringSecConf extends WebSecurityConfigurerAdapter{
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-
         http
                 .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
-                ;//.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
-//
-//// 		Vurdere om dette trengs etterhvert ...
-////		http
-////		.exceptionHandling()
-////		.accessDeniedPage("/access-denied.html");
+                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
 
         http
                 .csrf()
-                .disable() // <== Trenger csrf().disable() for at "/logout" (dvs logout) skal fungere
+                //.disable() // <== Trenger ikke lenger csrf().disable() for at "/logout" skal fungere
         ;
 
         http
-                .jee()
-                //.mappableRoles("LAND", "DISTRIKT_LISTE", "DISTRIKT")
-                .mappableRoles("USER")
-                //.authenticatedUserDetailsService(authenticationUserDetailsService())
+            .jee()
+            //.mappableRoles("LAND", "DISTRIKT_LISTE", "DISTRIKT")
+            .mappableRoles("USER")
+            //.authenticatedUserDetailsService(authenticationUserDetailsService())
         ;
 
-//        http
-//                .formLogin()
-//                .loginPage("/login?reason=login")
-//                .failureUrl("/login?reason=failure")
-//                .usernameParameter("username")
-//                .passwordParameter("password")
-//                .loginProcessingUrl("/login")
-//                //.successForwardUrl("/secured/hei")
-//                .permitAll()
-//        ;
-//
-//        http
-//                .logout()
-//                .logoutUrl("/log") // <== NOTE: Forutsetter http.csrf().disable() siden dette blir aktivert med GET!
-//                .permitAll()
-//                .invalidateHttpSession(true)
-//                .logoutSuccessUrl("/login?reason=logout")
-//        ;
-//
-//        // Granted Authorities: ROLE_USER' stored to HttpSession:
-//        //http.httpBasic().realmName("MyRealmName");
-//
-//        http
-//                .authorizeRequests()
-//                .antMatchers("/secured/**")
-//                .hasAnyRole("USER") // <== "USER" funker men "ROLE_USER" fungerer ikke
-//                .anyRequest()
-//                .authenticated()
-//        ;
-//
-//
 
         http
             .authorizeRequests()
-                .antMatchers("/secured/**").hasAnyRole("USER")              //.access("hasRole('ROLE_ADMIN')")
+                .antMatchers("/secured/**")
+                .hasAnyRole("USER") // <== "USER" funker men "ROLE_USER" fungerer ikke
                 .anyRequest().authenticated()
 
             .and()
-                .formLogin() //.loginProcessingUrl("/login").permitAll()
-                //.loginPage("/login")
-                //.failureUrl("/login?error")//.permitAll()
-                //.usernameParameter("username").passwordParameter("password")
-                //.loginProcessingUrl("j_security_check")
+                .formLogin()
+                .permitAll()
             .and()
                 .logout()
-                .logoutUrl("/logout")
-                .permitAll().invalidateHttpSession(true).logoutSuccessUrl("/login?reason=logout")
+                .permitAll()
+//                .invalidateHttpSession(true)
+//                .clearAuthentication(true)
+//                .deleteCookies("JSESSIONID")
+                .logoutSuccessUrl("/login?reason=logout")
             .and()
-                .exceptionHandling().accessDeniedPage("/login?failure")
-
+                .exceptionHandling()
+                .accessDeniedPage("/login?reason=failure")
         ;
-
     }
-
-
 }

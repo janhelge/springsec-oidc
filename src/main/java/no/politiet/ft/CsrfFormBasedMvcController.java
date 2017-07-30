@@ -41,6 +41,7 @@ public class CsrfFormBasedMvcController {
                 + "<br/>Du kan logge inn igjen ved &aring; bruke <a href=\"login\">denne</a> lenken.";
 	}
 
+
     @ResponseBody
     @RequestMapping(value="/secured/hei", method = RequestMethod.GET, produces = "text/plain")
     public String securedhei() {
@@ -53,6 +54,12 @@ public class CsrfFormBasedMvcController {
 //        return "welcome";
 //    }
 
+//
+//    @RequestMapping(value="/oauth2/authorization/code/mitre", method = RequestMethod.GET)
+//    public String mitre(HttpServletRequest request, HttpServletResponse response) {
+//
+//        return "redirect:http://localhost:8080/openid-connect-server-webapp/login";
+//    }
 
     @RequestMapping(value="/logout", method = RequestMethod.GET)
     public String logout(HttpServletRequest request, HttpServletResponse response) {

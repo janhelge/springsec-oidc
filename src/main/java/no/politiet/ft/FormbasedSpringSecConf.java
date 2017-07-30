@@ -5,16 +5,28 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 
 @Configuration
-@Import(CsrfFormBasedMvcController.class)
+@Import({CsrfFormBasedMvcController.class, MyMitreClientRegistrationRepo.class})
+
+@PropertySource(ignoreResourceNotFound = true, value = {
+        "classpath:mitre.client.properties",
+        "classpath:application.properties",
+        "classpath:application-env.properties"})
+
 @EnableWebSecurity
 public class FormbasedSpringSecConf extends WebSecurityConfigurerAdapter{
+
+    @Autowired
+    private ClientRegistrationRepository clientRegistrationRepository;
+
 
     private static final Logger log = LoggerFactory.getLogger(FormbasedSpringSecConf.class);
 
@@ -36,8 +48,21 @@ public class FormbasedSpringSecConf extends WebSecurityConfigurerAdapter{
         web.debug(Boolean.TRUE);
     }
 
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http
+                .authorizeRequests()
+                //.antMatchers("/secured/**")
+                .anyRequest()
+                .authenticated()
+                .and()
+                .oauth2Login()
+                .clients(clientRegistrationRepository);
+    }
+
+    //@Override
+    protected void XXconfigure(HttpSecurity http) throws Exception {
 
         http
             .authorizeRequests()

@@ -18,7 +18,7 @@ import java.net.URL;
 public class HttpJettyRunner {
 	public static void main(String[] args) throws Exception {
         //System.setProperty("logback.configurationFile", "src/test/resources/logback-test.xml");
-		int port=8080;
+		int port=8082;
 		String contextPath="/";
 	    new HttpJettyRunner().startWebApp(port, contextPath , ApplicationInitializer.class, "fotoreg-rapport-angular-webjar" );
 		System.out.println("Jetty is airborne :-), du kan verifisere paa\nhttp://localhost:" + port + contextPath);

@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>no.politiet.ft</groupId>
-  <artifactId>jhs-spring-mvc-oidc</artifactId>
+  <artifactId>springsec-oidc</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 

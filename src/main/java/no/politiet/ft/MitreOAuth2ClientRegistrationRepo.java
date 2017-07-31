@@ -14,7 +14,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Configuration
-public class MyMitreClientRegistrationRepo {
+public class MitreOAuth2ClientRegistrationRepo {
 
     @Autowired
     private Environment environment;

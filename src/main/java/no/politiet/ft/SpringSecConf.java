@@ -11,10 +11,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 
 @Configuration
-@Import({MvcController.class, MyMitreClientRegistrationRepo.class})
+@Import({MvcController.class, MitreOAuth2ClientRegistrationRepo.class})
 
 @PropertySource(ignoreResourceNotFound = true, value = {
-        "classpath:mitre.client.properties",
+        "classpath:mitre-oauth2-client.properties",
         "classpath:application.properties",
         "classpath:application-env.properties"})
 

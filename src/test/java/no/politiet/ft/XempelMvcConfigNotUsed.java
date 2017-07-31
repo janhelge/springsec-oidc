@@ -21,7 +21,7 @@ import java.util.Date;
 		"classpath:application-env.properties"})
 //@Import({SpringSecurityConfig.class, JndiDaoConfig.class, LdapConfig.class})
 @EnableWebMvc
-@Import({CsrfFormBasedMvcController.class, FormbasedSpringSecConf.class})
+@Import({MvcController.class, SpringSecConf.class})
 public class XempelMvcConfigNotUsed extends WebMvcConfigurerAdapter {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(XempelMvcConfigNotUsed.class);

@@ -31,7 +31,7 @@ public class ApplicationInitializer extends AbstractAnnotationConfigDispatcherSe
 
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
-	    Class cls = FormbasedSpringSecConf.class; // XempelMvcConfigNotUsed.class; // HelloWorldController.class ;
+	    Class cls = SpringSecConf.class;
 		LOGGER.debug("RootConfigClasses is " + cls.getName());
 		return new Class<?>[] {	cls };
 	}

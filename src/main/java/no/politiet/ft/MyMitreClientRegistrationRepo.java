@@ -3,7 +3,6 @@ package no.politiet.ft;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
@@ -32,7 +31,6 @@ public class MyMitreClientRegistrationRepo {
         String clientSecret = this.environment.getProperty(clientPropertyKey + "client-secret");
         ClientAuthenticationMethod clientAuthenticationMethod = new ClientAuthenticationMethod(
                 this.environment.getProperty(clientPropertyKey + "client-authentication-method"));
-
         AuthorizationGrantType authorizationGrantType = AuthorizationGrantType.AUTHORIZATION_CODE;
         // Was: AuthorizationGrantType.valueOf(this.environment.getProperty(clientPropertyKey + "authorized-grant-type").toUpperCase());
         String redirectUri = this.environment.getProperty(clientPropertyKey + "redirect-uri");

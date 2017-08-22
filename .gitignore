@@ -1,4 +1,6 @@
 .classpath
+repo/
+old-repo/
 /*/.gitignore
 .project
 org.eclipse.*
@@ -16,3 +18,10 @@ target
 *.versionsBackup
 */repo
 /GitIgnore-stage/
+conf/
+repo-old/
+run.sh
+springsec-oidc-????????-????.tgz
+springsec-oidc-latest-dockercontext.tgz
+springsec-oidc-latest.dockerimage
+

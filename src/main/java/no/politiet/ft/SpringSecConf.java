@@ -38,8 +38,8 @@ public class SpringSecConf extends WebSecurityConfigurerAdapter{
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        //Boolean isDebug = environment.getProperty("spring.security.debug", Boolean.class, Boolean.FALSE);
-       // web.debug(Boolean.TRUE);
+        // Boolean isDebug = environment.getProperty("spring.security.debug", Boolean.class, Boolean.FALSE);
+        // web.debug(Boolean.TRUE);
     }
 
 
@@ -47,7 +47,7 @@ public class SpringSecConf extends WebSecurityConfigurerAdapter{
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                //.antMatchers("/secured/**")
+                //.antMatchers("/secured/**")  // NB: Ref springSecFilter faar requestene /secured/**
                 .anyRequest()
                 .authenticated()
                 .and()

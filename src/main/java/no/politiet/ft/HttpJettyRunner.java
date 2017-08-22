@@ -27,7 +27,7 @@ public class HttpJettyRunner {
 	private void startWebApp(int port, String contextPath,
 			Class<? extends AbstractAnnotationConfigDispatcherServletInitializer> annotationConfigurationCls, String artifactIdHoldingWebroot) throws Exception {
 
-		String webroot = "src/main"; //"/webapp"; // getWebjarPath(artifactIdHoldingWebroot);
+		String webroot = "src/main/webapp"; // getWebjarPath(artifactIdHoldingWebroot);
 		WebAppContext context = new WebAppContext(webroot,contextPath);
 
 		/* Her er alternativer som kan vaere aktuelle ifbm testing senere:*/

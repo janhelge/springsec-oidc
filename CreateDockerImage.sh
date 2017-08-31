@@ -41,6 +41,10 @@ DockerBuild(){
 	docker build --tag $ArifactId:$Version - < $TgzFileName
 	docker tag $ArifactId:$Version $ArifactId:latest
 	docker images $ArifactId
+
+	ToDir=/z/docker-kjoreseddel-springsec-oidc/
+	docker save -o ${ToDir}${ArifactId}-latest.dockerimage $ArifactId:latest
+	ls -ltr  ${ToDir}${ArifactId}-latest.dockerimage
 }
 
 GetHierarcicalArtifactId(){

@@ -6,12 +6,12 @@ import org.slf4j.LoggerFactory;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class StringTester {
+public class UrlStringTester {
 
-    private static final Logger log = LoggerFactory.getLogger(MyTestEnv.class);
+    private static final Logger log = LoggerFactory.getLogger(UrlStringTester.class);
 
     public static void main(String[] a) throws MalformedURLException {
-        StringTester x = new StringTester();
+        UrlStringTester x = new UrlStringTester();
         x.go("http://bla/");
     }
 

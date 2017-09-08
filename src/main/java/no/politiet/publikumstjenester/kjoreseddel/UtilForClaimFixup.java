@@ -34,32 +34,41 @@ Mitre-ID:
 "nickname":"Simon","name":"Simon Baumgartner","exp":1503934081000,"family_name":"Baumgartner",
 "iat":1503933481000,"email":"fodselsnummer.12127219735@fake.epost.com","jti":"bc60db9e-6b23-4921-a7f6-dd1ccd5162be"}
        */
-        public static Map<String,Object> produceWhoAmIFromClaim(DefaultOidcUser defaultOidcUser) {
+        public static Map<String,Object> emulateIDPortenFromMitreIDTestClaims(DefaultOidcUser defaultOidcUser) {
 
-            Map<String,Object> ret = new HashMap<>();
+            // FIXME: Midlertidig: Returnere "noe" selv om vi ikke er autentisert slik at /api/whoami ikke feiler
+
             if (defaultOidcUser==null) {
+                Map<String,Object> ret = new HashMap<>();
                 ret.put("ERROR", "DeaultOidcUser is <null>");
                 return ret;
             }
-            //ret.put("principal.getName()",defaultOidcUser.getName() != null ? defaultOidcUser.getName() : "<null>");
-            Map<String, Object> claims = defaultOidcUser.getClaims();
-            Set<String> supress = new HashSet<>();
 
-            supress.add("preferred_username");
-            supress.add("family_name");
-            supress.add("given_name");
-            supress.add("nickname");
-            supress.add("name");
-            String sub = (String) claims.get("sub");
-            if (sub.startsWith("fodselsnummer.")) {
-                ret.put("pid",sub.substring(14));
-                ret.put("acr","TestLevelAcr");  // "Level4"
-                ret.put("amr","KrimstadID");    // "BankID"
+            Map<String, Object> claims = defaultOidcUser.getClaims();
+
+            // Bare fixup test-oidc, "iss":"http://localhost:8080/openid-connect-server-webapp/"
+            if (claims.get("iss").toString().contains("openid-connect-server-webapp")){
+
+                Set<String> supress = new HashSet<>();
+                supress.add("preferred_username");
+                supress.add("family_name");
+                supress.add("given_name");
+                supress.add("nickname");
+                supress.add("name");
+                String sub = (String) claims.get("sub");
+                Map<String,Object> ret = new HashMap<>();
+                if (sub.startsWith("fodselsnummer.")) {
+                    ret.put("pid",sub.substring(14));
+                    ret.put("acr","TestLevelAcr");  // "Level4"
+                    ret.put("amr","KrimstadID");    // "BankID"
+                }
+                for (String key : claims.keySet()) {
+                    if (supress.contains(key)) continue;
+                    ret.put(key,claims.get(key));
+                }
+                return ret;
             }
-            for (String key : claims.keySet()) {
-                if (supress.contains(key)) continue;
-                ret.put(key,claims.get(key));
-            }
-            return ret;
+
+            return claims;
         }
 }

@@ -23,22 +23,23 @@ public class HttpJettyRunner {
     final static String REQUIRED_ENV_VARIABLE_OIDC_REDIRECT_PREFIX = "OIDC_REDIRECT_PREFIX";
 
     // NB: Defaultverdien for denne er $REQUIRED_ENV_VARIABLE_OIDC_REDIRECT_PREFIX
-    private final static String VARIABLE_APP_CONTEXT_PREFIX = "APP_CONTEXT_PREFIX";
+    final static String VARIABLE_APP_CONTEXT_PREFIX = "APP_CONTEXT_PREFIX";
+
     public static String CONTEXTPATH;
 
     private static final Logger log = LoggerFactory.getLogger(HttpJettyRunner.class);
-    /*
+    /*====================================================================================================
     security.oauth2.client.mitre.redirect-uri=http://localhost:8082/kjoreeddel/oauth2/authorize/code/mitre
                                               !-------------------------------!
-    REDIRECT_URI_PREFIX=http://localhost:8082/kjoreseddel/
-     */
+                                               REDIRECT_URI_PREFIX=http://localhost:8082/kjoreseddel/
+     ====================================================================================================*/
 
 
     public static void main(String[] args) throws Exception {
 
         if (System.getenv("LOGBACK_CONFIGURATION_FILE") != null) {
             System.setProperty("logback.configurationFile", System.getenv("LOGBACK_CONFIGURATION_FILE"));
-        } else {
+        } else if (System.getProperty("logback.configurationFile")!=null) {
             System.setProperty("logback.configurationFile", "src/test/resources/logback-test.xml");
         }
 
@@ -93,6 +94,7 @@ public class HttpJettyRunner {
 			}
 		};
 	}
+
     private static String appContextPrefix() {
         String appContextPrefix;
         if ((appContextPrefix=System.getProperty(VARIABLE_APP_CONTEXT_PREFIX, System.getenv(VARIABLE_APP_CONTEXT_PREFIX)))==null)

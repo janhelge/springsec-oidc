@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
@@ -16,6 +17,12 @@ import java.util.Collections;
 import java.util.List;
 
 @Configuration
+
+@PropertySource(ignoreResourceNotFound = true, value = {
+        "classpath:mitre-oauth2-client.properties",
+        "classpath:application.properties",
+        "classpath:application-env.properties"})
+
 public class MitreOAuth2ClientRegistrationRepo {
 
     private static final Logger log = LoggerFactory.getLogger(MitreOAuth2ClientRegistrationRepo.class);
@@ -33,9 +40,6 @@ public class MitreOAuth2ClientRegistrationRepo {
 
     private ClientRegistration clientRegistration(String clientPropertyKey) {
 
-//        String testa = this.environment.getProperty(clientPropertyKey + "testa");
-//        log.info("testa: " + testa);
-
         String clientId = this.environment.getProperty(clientPropertyKey + "client-id");
         String clientSecret = this.environment.getProperty(clientPropertyKey + "client-secret");
         ClientAuthenticationMethod clientAuthenticationMethod = new ClientAuthenticationMethod(
@@ -51,12 +55,21 @@ public class MitreOAuth2ClientRegistrationRepo {
         String clientName = this.environment.getProperty(clientPropertyKey + "client-name");
         String clientAlias = this.environment.getProperty(clientPropertyKey + "client-alias");
 
+        // =================================================================
+        // FEILBESKRIVELSE  SpringSecurity, Feil link i valg av loginmetode.
+        // =================================================================
+        // org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter
+        // i jar: springsecurity-web FeilgenerertLink er http://localhost:8082/oauth2/authorization/code/mitre, skulle vært
+        // http://localhost:8082/kjoreseddel/oauth2/authorization/code/mitre (dvs med context-root)
+        // DefaultLoginPageGeneratingFilter genererer feil login link fordi contextroot ikke er med
+        // security.oauth2.client.mitre.redirect-uri=${OIDC_REDIRECT_PREFIX}oauth2/authorize/code/mitre i property-fila
 
         log.info(
-            "Oidc config\n"
-            + "authorizationUri: " + authorizationUri+ "\n"// == ${OIDC_PROVIDER_PREFIX}authorize
-            + "tokenUri: " + tokenUri + "\n" // == ${OIDC_PROVIDER_PREFIX}token0
-            + "redirectUri: " + redirectUri // == ${OIDC_REDIRECT_PREFIX}oauth2/authorize/code/mitre
+            "Oidc config med ekspandert environment ...\n"
+            + " ${OIDC_PROVIDER_PREFIX}authorize ekspanderes til ==> "
+            + "\tauthorizationUri: \t" + authorizationUri+ "\n" // == ${OIDC_PROVIDER_PREFIX}authorize
+            + "${OIDC_REDIRECT_PREFIX}oauth2/authorize/code/mitre ==> "
+            + "\tredirectUri: \t" + redirectUri                 // == ${OIDC_REDIRECT_PREFIX}oauth2/authorize/code/mitre
         );
 
         return new ClientRegistration.Builder(clientId)

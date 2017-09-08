@@ -34,7 +34,14 @@ Doit(){
 }
 
 RunBoth(){
-	docker run -d -p 8082:8082 --net=host --name springsec-oidc springsec-oidc:latest
+	local d
+	d=`pwd`/dumpdir
+	mkdir -p $d
+	docker run -d -p 8082:8082 \
+	-e OIDC_REDIRECT_PREFIX=http://localhost:8082/ \
+	-e OIDC_PROVIDER_PREFIX=http://localhost:8080/openid-connect-server-webapp/ \
+	-e DIRECTORY_FOR_SERIALIZED_FILES=/dumpdir -v $d:/dumpdir \
+	--net=host --name springsec-oidc springsec-oidc:latest
 }
 ##################### END-OF-CUSTOMIZE #######################
 ContainerIp(){ docker inspect --format {{.NetworkSettings.IPAddress}} $1; }

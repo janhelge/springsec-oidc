@@ -1,0 +1,33 @@
+<h3>Testskjema</h3>
+<form method="POST" action="/api/soknad" enctype="multipart/form-data">
+    <table>
+        <tr>
+            <td><label>Adresse</label></td>
+            <td><input type="text" name="adresse"/></td>
+        </tr>
+        <tr>
+            <td><label >Eventuell annen adresse</label></td>
+            <td><input type="text" name="annen_adresse"/></td>
+        </tr>
+        <tr>
+            <td><label>S&oslash;knaden gjelder</label></td>
+            <td>
+                <select name="soknaden_gjelder">
+                    <option value="forste gangs utstedelse">f&oslash;rste gangs utstedelse</option>
+                    <option value="fornyelse">fornyelse</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td><label>Last opp helseattest. (Ett- eller flere skjema, *.txt eller *.pdf)</label></td>
+            <td><input type="file" name="helseattest" multiple="true" accept=".txt, .pdf"/></td><!-- Tar multiple="true" for aa illustrere -->
+        </tr>
+        <tr>
+            <td><label>Last opp bekreftelse p&aring; kjentmannspr&oslash;ve</label></td>
+            <td><input type="file" name="kjentmannsprove" multiple="false" accept=".txt, .pdf"/></td>
+        </tr>
+        <tr>
+            <td colspan="2" align="right"><input type="submit" value="Submit"/></td>
+        </tr>
+    </table>
+</form>

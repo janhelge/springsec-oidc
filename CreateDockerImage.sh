@@ -17,7 +17,6 @@ MakeRepo(){
 	mvn clean install
 	cp target/$(FindArtifact) repo
 	KopierSrcTestResources # Quick and dirty kopiere ressursfiler...
-
 }
 
 
@@ -109,7 +108,7 @@ MakeUnixStartupScript(){
 	}
 	# local MainClass=no.politiet.fellestjenester.folkeregister.dockerjettystarter.JettyFregStarter
 	# local MainClass=no.politiet.datapowermock.JettyStarter
-	local MainClass=no.politiet.ft.HttpJettyRunner
+	local MainClass=no.politiet.publikumstjenester.kjoreseddel.HttpJettyRunner
 	local F=run.sh
 	rm $F
 	echo '#!/bin/sh' > $F
@@ -157,8 +156,9 @@ MakeDockerfile(){
 		ADD repo /repo
 		ADD src  /src
 		ADD run.sh /
+		VOLUME ["/dumpdir"]
 		# VOLUME ["/conf", "/conf"]
-		EXPOSE 8081
+		# EXPOSE 8081
 		CMD sh /run.sh 
 	!
 }

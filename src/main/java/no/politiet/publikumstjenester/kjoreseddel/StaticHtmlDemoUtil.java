@@ -13,6 +13,7 @@ public class StaticHtmlDemoUtil {
     public static String links = "<table><tr>" +
             "<td><a href=\"login\">Login</a>.&nbsp;</td>" +
             "<td><a href=\"open/index.html\">&Aring;pen del av applikasjonen, hjelp etc</a>.&nbsp;</td>" +
+            "<td><a href=\"open/fileup.html\">DEBUG-Soknad-Skjema, &Aring;pen (DEBUG)</a>.&nbsp;</td>" +
             "<td><a href=\"api/info\">Sikret info</a>.&nbsp;</td>" +
             "<td><a href=\"api/whoami\">Sikret info whoami</a>.&nbsp;</td>" +
             "<td><a href=\"logout\">Logout</a>.&nbsp;</td>" +
